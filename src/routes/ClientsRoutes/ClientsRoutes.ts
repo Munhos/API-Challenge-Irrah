@@ -1,95 +1,30 @@
-// src/routes/clients.routes.ts
-import { Router } from "express";
+
+import { Router, Request, Response } from "express";
 import { ClientsController } from "../../controllers/ClientsController/ClientsController";
+import { authenticateJWTAdmin } from "../../middleware/authAdmin";
+import { authenticateJWT } from "../../middleware/auth";
 
-const router = Router();
-const controller = new ClientsController();
+export const router = Router();
+const clientController = new ClientsController();
 
-/**
- * @swagger
- * /clients:
- *   post:
- *     summary: Criar um novo cliente
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             example: { nome: "Maria", email: "maria@email.com" }
- *     responses:
- *       201:
- *         description: Cliente criado com sucesso
- */
-router.post("/clients", () => {controller.createClient});
+router.post("/clients", authenticateJWT, (req: Request, res: Response) => {
+  clientController.createClient(req, res);
+});
 
-/**
- * @swagger
- * /clients:
- *   get:
- *     summary: Listar todos os clientes
- *     responses:
- *       200:
- *         description: Lista de clientes
- */
-router.get("/clients", () => {controller.getAllClients});
+router.get("/clients", authenticateJWTAdmin, (req: Request, res: Response) => {
+  clientController.getAllClients(req, res);
+});
 
-/**
- * @swagger
- * /clients/{id}:
- *   get:
- *     summary: Buscar cliente por ID
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *     responses:
- *       200:
- *         description: Cliente encontrado
- */
-router.get("/clients/:id", () => {controller.getClientById});
+router.get("/clients/:id", authenticateJWTAdmin, (req: Request, res: Response) => {
+  clientController.getClientById(req, res);
+});
 
-/**
- * @swagger
- * /clients/{id}:
- *   patch:
- *     summary: Atualizar dados do cliente
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             example: { nome: "Maria Atualizada" }
- *     responses:
- *       200:
- *         description: Cliente atualizado com sucesso
- */
-router.patch("/clients/:id", () => {controller.updateClient});
+router.put("/clients/:id", authenticateJWTAdmin, (req: Request, res: Response) => {
+  clientController.updateClient(req, res);
+});
 
-/**
- * @swagger
- * /clients/{id}/balance:
- *   get:
- *     summary: Verificar saldo ou dívida do cliente
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *     responses:
- *       204:
- *         description: Saldo verificado
- */
-router.get("/clients/:id/balance", () => {controller.getClientBalance});
+router.get("/clients/:id/balance", authenticateJWTAdmin, (req: Request, res: Response) => {
+  clientController.getClientBalance(req, res);
+});
 
 export default router;

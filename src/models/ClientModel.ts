@@ -2,7 +2,7 @@ import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../database/db';
 
 export interface ClientAttributes {
-  id: number;
+  id?: string; 
   name: string;
   documentId: string;
   documentType: 'CPF' | 'CNPJ';
@@ -19,7 +19,7 @@ export interface ClientCreationAttributes extends Optional<ClientAttributes, 'id
 export const Client = sequelize.define<Model<ClientAttributes, ClientCreationAttributes>>(
   'Client',
   {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    id: { type: DataTypes.STRING, primaryKey: true, allowNull: false},
     name: { type: DataTypes.STRING },
     documentId: { type: DataTypes.STRING, unique: true },
     documentType: { type: DataTypes.ENUM('CPF', 'CNPJ') },
@@ -28,11 +28,12 @@ export const Client = sequelize.define<Model<ClientAttributes, ClientCreationAtt
     limit: { type: DataTypes.FLOAT, defaultValue: 0 },
     active: { type: DataTypes.BOOLEAN, defaultValue: true },
     created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
-    updated_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW }
+    updated_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
   },
   {
     tableName: 'clients',
     timestamps: true,
-    underscored: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
   }
 );

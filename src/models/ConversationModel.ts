@@ -4,7 +4,7 @@ import { Client } from './ClientModel';
 import { Message } from './MessageModel';
 
 export interface ConversationAttributes {
-  id: number;
+  id: string;
   clientId: number;
   recipientId: string;
   recipientName: string;
@@ -20,11 +20,10 @@ export interface ConversationCreationAttributes extends Optional<ConversationAtt
 export const Conversation = sequelize.define<Model<ConversationAttributes, ConversationCreationAttributes>>(
   'Conversation',
   {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-      allowNull: false,
+    id: { 
+      type: DataTypes.STRING, 
+      primaryKey: true, 
+      allowNull: false
     },
     clientId: {
       type: DataTypes.INTEGER,
@@ -68,10 +67,10 @@ export const Conversation = sequelize.define<Model<ConversationAttributes, Conve
   {
     tableName: 'conversations',
     timestamps: true,
-    underscored: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
   }
 );
 
-// Associações
 Conversation.belongsTo(Client, { foreignKey: 'clientId' });
 Conversation.hasMany(Message, { foreignKey: 'conversationId' });

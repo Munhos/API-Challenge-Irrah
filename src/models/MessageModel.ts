@@ -4,7 +4,7 @@ import { Client } from './ClientModel';
 import { Conversation } from './ConversationModel';
 
 export interface MessageAttributes {
-  id: number;
+  id: string;
   conversationId: number;
   senderId: number;
   recipientId: string;
@@ -51,10 +51,8 @@ export const Message = sequelize.define<Model<MessageAttributes, MessageCreation
   {
     tableName: 'messages',
     timestamps: true,
-    underscored: true
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
   }
 );
 
-// Associações
-Message.belongsTo(Client, { foreignKey: 'senderId', as: 'sender' });
-Message.belongsTo(Conversation, { foreignKey: 'conversationId' });

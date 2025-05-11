@@ -1,4 +1,3 @@
-// src/controllers/ClientsController/ClientsController.ts
 import { Response } from "express";
 import { ClientsService } from "../../services/ClientsService/ClientsService";
 import { AuthenticatedRequest } from "../../middleware/auth";
@@ -7,38 +6,64 @@ const clientService = new ClientsService();
 
 export class ClientsController {
   async createClient(req: AuthenticatedRequest, res: Response) {
-    const clientData = req.body;
-    const response = await clientService.createClient(clientData);
-    return res.status(201).json(response);
+    try {
+      const clientData = req.body;
+      const response = await clientService.createClient(clientData);
+      return res.status(201).json(response);
+    } catch (error) {
+      console.error("Erro ao criar cliente:", error);
+      return res.status(500).json({ error: "Erro ao criar cliente." });
+    }
   }
 
   async getAllClients(req: AuthenticatedRequest, res: Response) {
-    const response = await clientService.getAllClients();
-    const cliente = req.client
-    return res.json({cliente});
+    try {
+      const response = await clientService.getAllClients();
+      const cliente = req.client;
+      return res.json({ cliente, response });
+    } catch (error) {
+      console.error("Erro ao buscar todos os clientes:", error);
+      return res.status(500).json({ error: "Erro ao buscar clientes." });
+    }
   }
 
   async getClientById(req: AuthenticatedRequest, res: Response) {
-    const { id } = req.params;
-    const response = await clientService.getClientById(Number(id));
-    return res.status(200).json(response);
+    try {
+      const { id } = req.params;
+      const response = await clientService.getClientById(Number(id));
+      return res.status(200).json(response);
+    } catch (error) {
+      console.error(`Erro ao buscar cliente com ID ${req.params.id}:`, error);
+      return res.status(500).json({ error: "Erro ao buscar cliente por ID." });
+    }
   }
 
   async updateClient(req: AuthenticatedRequest, res: Response) {
-    const { id } = req.params;
-    const clientData = req.body;
-    const response = await clientService.updateClient(Number(id), clientData);
-    return res.status(200).json(response);
+    try {
+      const { id } = req.params;
+      const clientData = req.body;
+      const response = await clientService.updateClient(Number(id), clientData);
+      return res.status(200).json(response);
+    } catch (error) {
+      console.error(`Erro ao atualizar cliente com ID ${req.params.id}:`, error);
+      return res.status(500).json({ error: "Erro ao atualizar cliente." });
+    }
   }
 
   async getClientBalance(req: AuthenticatedRequest, res: Response) {
-    const { id } = req.params;
+    try {
+      const { id } = req.params;
+      const payload = req.client;
 
-    // Exemplo de validação: o CPF/CNPJ do token bate com o ID?
-    const payload = req.client;
-    if (!payload) return res.status(401).json({ error: "Token inválido" });
+      if (!payload) {
+        return res.status(401).json({ error: "Token inválido." });
+      }
 
-    const response = await clientService.balanceClient(Number(id));
-    return res.status(200).json(response); // Se retornar valor, altere para 200
+      const response = await clientService.balanceClient(Number(id));
+      return res.status(200).json(response);
+    } catch (error) {
+      console.error(`Erro ao obter saldo do cliente com ID ${req.params.id}:`, error);
+      return res.status(500).json({ error: "Erro ao obter saldo do cliente." });
+    }
   }
 }

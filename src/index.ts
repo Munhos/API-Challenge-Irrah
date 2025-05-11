@@ -3,11 +3,11 @@ import express from "express";
 import dotenv from "dotenv";
 import { sequelize } from "./database/db";
 import { Sequelize } from "sequelize";
+import router from "./routes/index";
 
 dotenv.config();
 
 const app = express();
-export const router = express.Router();
 app.use(express.json());
 app.use(router);
 

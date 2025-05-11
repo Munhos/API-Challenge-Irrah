@@ -7,8 +7,13 @@ export class ConversationsService {
         return response;
     }
 
-    async getOneConversation(conversationId: number) {
+    async getOneConversation(conversationId: string) {
         const response = await Conversation.findByPk(conversationId);
+        return response;
+    }
+
+    async updateConversation(conversationId: string, data: ConversationCreationAttributes) {
+        const response = await Conversation.update(data, {where: { id: conversationId}})
         return response;
     }
 

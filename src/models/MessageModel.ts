@@ -5,7 +5,7 @@ import { Conversation } from './ConversationModel';
 
 export interface MessageAttributes {
   id: string;
-  conversationId: number;
+  conversationId: string;
   senderId: number;
   recipientId: string;
   content: string;
@@ -22,9 +22,13 @@ export interface MessageCreationAttributes extends Optional<MessageAttributes, '
 export const Message = sequelize.define<Model<MessageAttributes, MessageCreationAttributes>>(
   'Message',
   {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    id: { 
+      type: DataTypes.STRING, 
+      primaryKey: true, 
+      allowNull: false
+    },
     conversationId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       references: { model: 'conversations', key: 'id' },
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',

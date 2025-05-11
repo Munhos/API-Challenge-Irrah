@@ -11,7 +11,7 @@ export class AuthController {
         const clientId = await Client.findOne({ where: { documentId: cpf || cnpj }})
 
         const payload = {
-            id: clientId,
+            data: clientId,
             cpf: cpf || null,
             cnpj: cnpj || null,
         };
@@ -19,7 +19,7 @@ export class AuthController {
         const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "12h" });
 
         return res.json({
-            id: clientId || null,
+            data: clientId || null,
             cpf: cpf || null,
             cnpj: cnpj || null,
             token

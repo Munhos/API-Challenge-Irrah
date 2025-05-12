@@ -7,8 +7,13 @@ export class ConversationsService {
         return response;
     }
 
+    async getAllConversation(conversationId: string) {
+        const response = await Conversation.findAll({where: {clientId: conversationId}});
+        return response;
+    }
+
     async getOneConversation(conversationId: string) {
-        const response = await Conversation.findByPk(conversationId);
+        const response = await Conversation.findOne({where: {id: conversationId}});
         return response;
     }
 
@@ -17,9 +22,10 @@ export class ConversationsService {
         return response;
     }
 
-    async getAllMessagesByConversation(conversationId: number) {
+    async getAllMessagesByConversation(conversationId: string, clientId: string) {
         const response = await Message.findAll({
             where: {
+                senderId: clientId,
                 conversationId
             }
         });

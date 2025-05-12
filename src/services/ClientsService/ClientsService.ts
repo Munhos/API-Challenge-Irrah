@@ -6,8 +6,13 @@ export class ClientsService {
         return response;
     }
 
-    async getClientById(clientId: number) {
+    async getClientById(clientId: string) {
         const response = await Client.findByPk(clientId);
+        return response;
+    }
+
+    async updateClientById(id: string, clientData: ClientCreationAttributes) {
+        const response = await Client.update(clientData, {where: {id}});
         return response;
     }
 
@@ -16,14 +21,12 @@ export class ClientsService {
         return response;
     }
 
-    async updateClient(clientId: number, clientData: Partial<ClientCreationAttributes>) {
-        const response = await Client.update(clientData, {
-            where: { id: clientId },
-        });
+    async updateClient(clientId: string, clientData: Partial<ClientCreationAttributes>) {
+        const response = await Client.update(clientData, {where: { id: clientId }});
         return response;
     }
 
-    async balanceClient(clientId: number) {
+    async balanceClient(clientId: string) {
         const response = await Client.findOne({
             where: { id: clientId },
         });

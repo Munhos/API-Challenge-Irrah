@@ -10,6 +10,10 @@ router.post("/conversations", authenticateJWT, (req: Request, res: Response) => 
   conversationController.createConversation(req, res);
 });
 
+router.get("/conversations", authenticateJWT, (req: Request, res: Response) => {
+  conversationController.getAllConversation(req, res);
+});
+
 router.get("/conversations/:id", authenticateJWT, (req: Request, res: Response) => {
   conversationController.getOneConversation(req, res);
 });

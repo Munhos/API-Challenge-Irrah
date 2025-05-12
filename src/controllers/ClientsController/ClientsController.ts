@@ -30,7 +30,7 @@ export class ClientsController {
   async getClientById(req: AuthenticatedRequest, res: Response) {
     try {
       const { id } = req.params;
-      const response = await clientService.getClientById(Number(id));
+      const response = await clientService.getClientById(id);
       return res.status(200).json(response);
     } catch (error) {
       console.error(`Erro ao buscar cliente com ID ${req.params.id}:`, error);
@@ -42,7 +42,7 @@ export class ClientsController {
     try {
       const { id } = req.params;
       const clientData = req.body;
-      const response = await clientService.updateClient(Number(id), clientData);
+      const response = await clientService.updateClient(id, clientData);
       return res.status(200).json(response);
     } catch (error) {
       console.error(`Erro ao atualizar cliente com ID ${req.params.id}:`, error);
@@ -59,7 +59,7 @@ export class ClientsController {
         return res.status(401).json({ error: "Token inválido." });
       }
 
-      const response = await clientService.balanceClient(Number(id));
+      const response = await clientService.balanceClient(id);
       return res.status(200).json(response);
     } catch (error) {
       console.error(`Erro ao obter saldo do cliente com ID ${req.params.id}:`, error);

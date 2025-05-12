@@ -53,4 +53,14 @@ export class MessagesController {
       return res.status(500).json({ error: "Erro ao buscar status da mensagem." });
     }
   }
+
+  async getQueueStatus(req: AuthenticatedRequest, res: Response) {
+    try {
+        const queueStatus = await messagesService.getQueueStatus();
+        return res.status(200).json(queueStatus);
+    } catch (error) {
+        console.error("Erro ao obter estatísticas da fila:", error);
+        return res.status(500).json({ error:"Erro ao obter estatísticas." });
+    }
+  }
 }

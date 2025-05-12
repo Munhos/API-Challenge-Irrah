@@ -11,19 +11,19 @@ router.post("/clients", authenticateJWT, (req: Request, res: Response) => {
   clientController.createClient(req, res);
 });
 
-router.get("/clients", authenticateJWTAdmin, (req: Request, res: Response) => {
+router.get("/clients", authenticateJWT, (req: Request, res: Response) => {
   clientController.getAllClients(req, res);
 });
 
-router.get("/clients/:id", authenticateJWTAdmin, (req: Request, res: Response) => {
+router.get("/clients/:id", authenticateJWT, (req: Request, res: Response) => {
   clientController.getClientById(req, res);
 });
 
-router.put("/clients/:id", authenticateJWTAdmin, (req: Request, res: Response) => {
+router.put("/clients/:id", authenticateJWT, (req: Request, res: Response) => {
   clientController.updateClient(req, res);
 });
 
-router.get("/clients/:id/balance", authenticateJWTAdmin, (req: Request, res: Response) => {
+router.get("/clients/:id/balance", authenticateJWT, (req: Request, res: Response) => {
   clientController.getClientBalance(req, res);
 });
 

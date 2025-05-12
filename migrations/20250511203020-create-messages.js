@@ -6,7 +6,6 @@ module.exports = {
       id: {
         type: Sequelize.STRING,
         primaryKey: true,
-        autoIncrement: true
       },
       conversationId: {
         type: Sequelize.STRING,

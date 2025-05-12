@@ -43,7 +43,6 @@ export class MessagesService {
             }
 
             if (!messageData.conversationId) {
-                // Cria nova conversa com ID gerado automaticamente
                 const conversation = await Conversation.create({
                     id: Date.now().toString(),
                     clientId: messageData.senderId,
@@ -57,7 +56,6 @@ export class MessagesService {
                 // @ts-ignore
                 messageData.conversationId = conversation.id;
             } else {
-                // Verifica se a conversa existe
                 const existingConversation = await Conversation.findOne({
                     where: { id: messageData.conversationId },
                 });
@@ -76,10 +74,8 @@ export class MessagesService {
                 }
             }
 
-            // Cria a mensagem
             const newMessage = await Message.create(messageData);
 
-            // Processa mensagens da fila
             const messageQueue = await Message.findAll({
                 where: { conversationId: messageData.conversationId }
             });
@@ -103,7 +99,6 @@ export class MessagesService {
                 }
             }
 
-            // Atualiza informações da conversa
             await Conversation.update(
                 {
                     lastMessageContent: messageData.content,
@@ -146,7 +141,6 @@ export class MessagesService {
             ]
         });
 
-        // Atualiza status para 'read' se ainda estiverem como 'sent'
         const idsToUpdate = messages
             // @ts-ignore
             .filter(msg => msg.status === 'sent')
